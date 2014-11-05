@@ -1,0 +1,6 @@
+PKG_LIBS=-lm -lz
+PKG_OBJECTS = seqTools.o
+OBJECTS = $(PKG_OBJECTS)
+all: $(SHLIB)
+clean: 
+	rm -f $(OBJECTS)

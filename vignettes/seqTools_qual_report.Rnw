@@ -1,0 +1,200 @@
+%\VignetteIndexEntry{seqTools_qual_report}
+%\VignettePackage{seqTools}
+
+\documentclass[11pt,a4paper]{article}
+
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+%% Load Packages
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+
+\usepackage{helvet}                         % Actually switches the default sans serif font to Nimbus Sans L
+
+\usepackage[english]{babel}                 % Language controls section headers
+\usepackage[utf8]{inputenc}                 % utf8 umlaut
+
+\usepackage{booktabs}                       % Table-Style
+\usepackage{url}
+
+\usepackage{makeidx}                        % Creation of index
+
+\usepackage[usenames,dvipsnames]{color}     
+\usepackage{sectsty}
+\usepackage{hyperref}                       % Working links, should be loaded as last package (except geometry)
+
+\usepackage{placeins}                       % FloatBarrier
+
+
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+%% Place settings
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+\allsectionsfont{\sffamily\color{RoyalBlue}}
+
+% Switches to standard sans serif for everything but math mode
+\renewcommand{\familydefault}{\sfdefault}   
+% Paragraph 
+\parindent0mm
+
+% Imported from Biobase package:
+\newcommand{\R}{{\textsf{R}}}
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\term}[1]{{\emph{#1}}}
+\newcommand{\Rpackage}[1]{\textsf{#1}}
+\newcommand{\Rfunction}[1]{\texttt{#1}}
+\newcommand{\Robject}[1]{\texttt{#1}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\textit{#1}}}
+\newcommand{\Rfunarg}[1]{{\textit{#1}}}
+
+
+\newcommand{\rtx}[1]{{\textsf{#1}}}
+\newcommand{\rcl}[1]{{\texttt{#1}}}
+\newcommand{\rfc}[1]{{\texttt{#1}}}
+\newcommand{\robj}[1]{{\texttt{#1}}}
+
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+%% Title & index
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+
+\title{Fastq quality data.}
+\author{Your Name here}
+
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+%% Document
+%% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+\tableofcontents
+
+\section{Project characteristics}
+
+\begin{tabular}{l l}  \hline
+\multicolumn{2}{c}{Project characteristics} \\
+\hline
+  Contact    & \\
+  Phone      & \\
+  Institute  & \\
+  Mail       & \\
+  Start date & \\
+\hline
+\end{tabular}
+
+
+\section{Global summaries}
+Input data: Summarized data on FASTQ files.
+
+<<echo=FALSE>>=
+library(seqTools)
+fqdir<-system.file("extdata", package="seqTools")
+fqq<-fastqq(file.path(fqdir,
+                c("g4_l101_n100.fq.gz", "g5_l101_n100.fq.gz")),
+                k=4,probeLabel=c("g4","g5"))
+# Set this to some other location
+basedir<-getwd()
+@
+
+Printout of \texttt{Fastqq} object:
+<<>>=
+fqq
+@
+
+
+\subsection{Project names and read numbers}
+<<>>=
+dfr<-data.frame(file=basename(fileNames(fqq)),
+                sample=probeLabel(fqq),
+                reads=format(nReads(fqq), big.mark=Sys.localeconv()[7]))
+print(dfr)
+@
+
+\section{Nucleotide patterns}
+
+\subsection{N nucleotides}
+
+% Eventually put some comment here
+<<echo=FALSE,fig=TRUE>>=
+plotNucCount(fqq)
+@
+
+\subsection{GC content}
+
+<<echo=FALSE,fig=TRUE>>=
+plotGCcontent(fqq)
+@
+
+
+\subsection{Nucleotide frequencies}
+
+<<results=tex,echo=FALSE>>=
+for(i in 1:nFiles(fqq))
+{
+  file<-file.path(basedir, paste("nucFreq_", i, ".pdf", sep=""))
+  pdf(file ,width=6, height=6)
+  plotNucFreq(fqq, i)
+  invisible(dev.off())
+  cat("\\begin{figure}[H]\n")
+  cat("\\begin{center}\n")
+  cat("\\includegraphics{", file, "}\n",sep="")
+  cat("\\end{center}\n")
+  cat("\\end{figure}\n\n")
+}
+@
+
+% Has to be put here because latex otherwise complains too many floats when >18 figures.
+\FloatBarrier
+
+
+
+\section{Phred qualities}
+
+<<echo=FALSE,results=tex>>=
+for(i in 1:nFiles(fqq))
+{
+  file<-file.path(basedir, paste("phredQuant_", i, ".pdf",sep=""))
+  pdf(file)
+  plotPhredQuant(fqq, i)
+  dev.off()
+  cat("\\begin{figure}[H]\n")
+  cat("\\begin{center}\n")
+  cat("\\includegraphics{", file, "}\n", sep="")
+  cat("\\end{center}\n")
+  cat("\\end{figure}\n\n")
+}
+@
+
+
+\FloatBarrier
+
+\section{Hierarchical clustering}
+
+<<echo=FALSE,fig=TRUE>>=
+fqi<-fqq
+probeLabel(fqi)<-paste(1:nFiles(fqi), probeLabel(fqi), sep="_")
+lbl<-probeLabel(fqi)
+# May set another palette
+cols<-terrain.colors(4)
+
+col_label<-function(n)
+{
+  if(is.leaf(n))
+  {
+    a<-attributes(n)
+    i<-which(a$label==lbl)
+    cat(a$label, "\t", i, "\n")
+    attr(n,"nodePar") <- c(a$nodePar, list(lab.col=cols[i%%4+1],
+                                        pch="", lab.cex=1.2))
+  }
+  return(n)
+}
+
+cbm<-cbDistMatrix(fqi)
+hc<-as.dendrogram(hclust(as.dist(cbm)))
+hcd<-dendrapply(hc, col_label)
+#
+op <- par(oma=c(1, 1, 1, 1), mar=c(1, 1, 1, 12) + 0.1)
+plot(hcd, horiz=TRUE, edgePar=list(lwd=2, lty=1))
+par(op)
+@
+
+\end{document}

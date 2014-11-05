@@ -1,0 +1,65 @@
+#exportPattern("^[[:alpha:]]+")
+useDynLib(seqTools)
+import(methods)
+import(zlibbioc)
+importFrom(utils,head)
+importFrom(utils,tail)
+export(
+    ascii2char,
+    countDnaKmers,
+    countFastaKmers,
+    countGenomeKmers,
+    countSpliceKmers,
+    char2ascii,
+    kMerIndex,
+    phredTable,
+    fastqq,
+    fastqKmerLocs,
+    fastqKmerSubsetLocs,
+    phredDist,
+    plotPhredDist,
+    plotPhredQuant,
+    phredQuantiles,
+    revCountDnaKmers,
+    simFastqqRunTimes,
+    sim_fq,
+    trimFastq,
+    writeFai,
+    writeSimFastq,
+    writeSimContFastq
+)
+exportMethods(
+    cbDistMatrix,
+    collectTime,
+    collectDur,
+    gcContent,
+    gcContentMatrix,
+    fileNames,
+    getK,
+    kmerCount,
+    maxSeqLen,
+    meltDownK,
+    mergedPhred,
+    mergedPhredQuantiles,
+    mergeFastqq,
+    nFiles,
+    nNnucs,
+    nReads,
+    nucFreq,
+    phred,
+    plotGCcontent,
+    plotKmerCount,
+    plotMergedPhredQuant,
+    plotNucCount,
+    plotNucFreq,
+    probeLabel,
+    "probeLabel<-",
+    propPhred,
+    seqLen,
+    seqLenCount
+)
+exportClasses(
+    Fastqq
+)
+
+

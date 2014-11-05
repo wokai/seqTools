@@ -1,0 +1,16 @@
+PKG_LIBS=-lm
+PKG_OBJECTS = seqTools.o
+
+ZLIB_CFLAGS+=$(shell echo 'zlibbioc::pkgconfig("PKG_CFLAGS")'|\
+    "${R_HOME}/bin/R" --vanilla --slave)
+PKG_LIBS+=$(shell echo 'zlibbioc::pkgconfig("PKG_LIBS_shared")' |\
+    "${R_HOME}/bin/R" --vanilla --slave)
+
+OBJECTS = $(PKG_OBJECTS)
+all: $(SHLIB)
+
+%.o: %.c
+	$(CC) $(ZLIB_CFLAGS) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c $< -o $@
+
+clean: 
+	rm -f $(OBJECTS)

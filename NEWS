@@ -1,0 +1,32 @@
+CHANGES IN VERSION 0.99.42
+-------------------------
+
+NEW FEATURES
+
+    o (none)
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o (none)
+
+BUG FIXES
+
+    o trimFastq also includes record identifiers in output files
+	(=read title), e.g. SRR014849.1 EIXKN4201CFU84 length=93.
+
+
+CHANGES IN VERSION 0.99.40
+-------------------------
+
+NEW FEATURES
+
+    o Included this NEWS file
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o (none)
+
+BUG FIXES
+
+    o (none)
