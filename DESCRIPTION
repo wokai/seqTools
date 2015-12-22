@@ -2,7 +2,7 @@ Package: seqTools
 Type: Package
 Title: Analysis of nucleotide, sequence and quality content on fastq
         files.
-Version: 1.5.0
+Version: 1.5.1
 Date: 2013-10-14
 Author: Wolfgang Kaisers
 Maintainer: Wolfgang Kaisers <kaisers@med.uni-duesseldorf.de>
