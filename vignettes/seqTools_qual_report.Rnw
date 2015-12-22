@@ -7,6 +7,7 @@
 %% Load Packages
 %% + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + %%
 
+\usepackage{float}
 \usepackage{helvet}                         % Actually switches the default sans serif font to Nimbus Sans L
 
 \usepackage[english]{babel}                 % Language controls section headers
@@ -133,7 +134,7 @@ for(i in 1:nFiles(fqq))
   pdf(file ,width=6, height=6)
   plotNucFreq(fqq, i)
   invisible(dev.off())
-  cat("\\begin{figure}[h]\n")
+  cat("\\begin{figure}[H]\n")
   cat("\\begin{center}\n")
   cat("\\includegraphics{", file, "}\n",sep="")
   cat("\\end{center}\n")
@@ -155,7 +156,7 @@ for(i in 1:nFiles(fqq))
   pdf(file)
   plotPhredQuant(fqq, i)
   dev.off()
-  cat("\\begin{figure}[h]\n")
+  cat("\\begin{figure}[H]\n")
   cat("\\begin{center}\n")
   cat("\\includegraphics{", file, "}\n", sep="")
   cat("\\end{center}\n")
